@@ -1,0 +1,116 @@
+.card {
+  margin-top: 55px !important;
+  padding: 10px;
+}
+
+/* .device-heading{
+font-weight: 600;
+margin: 10px 0px;
+} */
+.custom-table {
+  background-color: #f8f9fa;
+  height: 370px;
+  box-shadow: 5px 5px 5px  #88888833;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #929292;
+}
+
+.p-datatable .p-datatable-thead th {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+}
+
+.p-datatable .p-datatable-tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+.p-datatable .p-datatable-tbody tr:hover {
+  background: #ededed;
+  cursor: pointer;
+}
+
+.p-datatable .p-datatable-tbody td {
+  padding: 8px;
+  font-size: 13px;
+  border-bottom: 1px solid #ddd;
+}
+
+.status{
+  color: white;
+  display: inline-block;
+}
+.pi{
+  font-size: 1.3rem;
+}
+
+.red { 
+  color: #ff0000;
+  font-size: 1.8rem;
+}
+
+.green {
+  color: #13ca13;
+}
+
+.p-sortable-column-icon {
+  margin-left: 7px;
+  color: #ffffff;
+}
+
+.p-sortable-column .p-sortable-column-icon {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.p-sortable-column:hover .p-sortable-column-icon {
+  opacity: 1;
+}
+
+.components{
+  display: flex;
+  flex: wrap;
+  margin-top: 15px;
+}
+
+.device-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 5px;
+}
+
+.logout-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.logout {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.logout li {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout li:hover {
+  background-color: #f0f0f0;
+}

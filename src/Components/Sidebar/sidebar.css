@@ -1,0 +1,14 @@
+.pro-sidebar {
+    background-color: #111 !important; /* Dark Background */
+    color: white;
+    height: 100vh; /* Full height */
+  }
+  
+  /* Menu Items */
+  .pro-menu-item {
+    color: white !important;
+  }
+  
+  .pro-menu-item:hover {
+    background: #333 !important;
+  }
