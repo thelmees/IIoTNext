@@ -1,12 +1,8 @@
 .card {
-  margin-top: 55px !important;
-  padding: 10px;
+  /* margin-top: 55px !important;
+  padding: 10px; */
 }
 
-/* .device-heading{
-font-weight: 600;
-margin: 10px 0px;
-} */
 .custom-table {
   background-color: #f8f9fa;
   height: 370px;
@@ -15,6 +11,7 @@ margin: 10px 0px;
 
 ::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -113,4 +110,28 @@ margin: 10px 0px;
 
 .logout li:hover {
   background-color: #f0f0f0;
+}
+
+.state-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  text-align: center;
+  display: inline-block;
+}
+
+.state-badge.active {
+  background-color: #d4f5d4;
+  color: green;
+}
+
+.state-badge.inactive {
+  background-color: #f8d7da;
+  color: red;
+}
+
+.device-table:hover{
+  cursor: pointer;
+  background: #ededed;
+
 }

@@ -1,0 +1,39 @@
+.device-table-container {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.sticky-container{
+  position: sticky;
+  top: -15.8px;
+  z-index: 10;
+  background: #fff;
+  padding: 10px 0px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.state-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .state-badge.active {
+    background-color: #d4f5d4;
+    color: green;
+  }
+  
+  .state-badge.inactive {
+    background-color: #f8d7da;
+    color: red;
+  }
+    

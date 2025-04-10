@@ -1,0 +1,109 @@
+.Attributes-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
+  font-size: 14px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+
+.controls {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sticky-controls {
+  position: sticky;
+  top: -20px;
+  z-index: 10;
+  background: #fff;
+  padding: 20px 0px;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 67px;
+  background-color: #f9f9f9;
+  z-index: 5;
+}
+
+.search-input, select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.attributs-table{
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; 
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.edit-icon {
+  color: #666;
+  cursor: pointer;
+}
+
+.copyable-cell {
+  position: relative;
+  padding-right: 70px;
+}
+
+.ellipsis-text {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 20px; 
+}
+
+.copy-btn {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 2px 8px;
+  font-size: 12px;
+  border: none;
+  background: none;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.copyable-cell:hover .copy-btn {
+  display: inline-block;
+}
+
+.copy-btn:hover {
+  background: #f6f6f6;
+}
+
+.edit-icon {
+  color: #666;
+  cursor: pointer;
+}

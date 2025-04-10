@@ -79,17 +79,17 @@ function DeviceList() {
 
   return (
     <div className="card">
-      <div className="header">
+      {/* <div className="header">
         <p className='device-heading'>Device Management Home</p>
         
         <i className="pi pi-bars menu-icon" onClick={(e) => menuRef.current.toggle(e)}></i>
         
         <OverlayPanel ref={menuRef}>
           <ul className="logout">
-            <li onClick={handleLogout}><i className="pi pi-sign-out"></i> Logout</li>
+            <li onClick={handleLogout}><  i className="pi pi-sign-out"></i> Logout</li>
           </ul>
         </OverlayPanel>
-      </div>
+      </div> */}
       <DataTable value={filteredDevices} tableStyle={{ minWidth: '50rem' }} className="custom-table" 
         scrollable scrollHeight='370px' onRowClick={(e) => navigate(`/telemetry/${e.data.id.id}`)}>
         <Column field="name" header={headerFilter}/> 

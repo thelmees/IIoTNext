@@ -3,19 +3,24 @@ import './App.css';
 import Login from './Components/Login/login';
 import DeviceList from './Components/DeviceList/deviceList';
 import Telemetry from './Components/Telemetry/Telemetry';
-import Sidebar from './Components/Sidebar/sidebar';
+import Layout from './Components/Sidebar/layout';
+import Devices from './Components/Devices/Devices';
 
 function App() {
   return (
     <div className="App">
-
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/deviceList" element={<DeviceList />} />
-        <Route path="/telemetry/:deviceId" element={<Telemetry />} />
+
+        <Route element={<Layout />}>
+          <Route path="/deviceList" element={<DeviceList />} />
+          <Route path="/device" element={<Devices/>} />
+          <Route path="/telemetry/:deviceId" element={<Telemetry />} />
+        </Route>
       </Routes>
     </div>
   );
 }
 
 export default App;
+

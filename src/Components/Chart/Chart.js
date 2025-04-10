@@ -27,8 +27,9 @@ const DonutChart = () => {
         label: ['Devices'],
         data: [activeCount,inactiveCount], 
         backgroundColor: ["#129212","#cd0000"],
-        hoverBackgroundColor: ["#12a412", "#e04e2e"],
+        hoverBackgroundColor: ["#42ea42", "#e04e2e"],
         borderWidth: 1,
+        hoverBorderWidth:4,
       },
     ],
   };

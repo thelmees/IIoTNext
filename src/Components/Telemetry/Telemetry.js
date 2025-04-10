@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import {  useParams } from "react-router-dom";
 import "./Telemetry.css";
 import Header from "../Header/header";
 import { Toast } from "primereact/toast";
@@ -11,11 +10,11 @@ import { downloadTelemetry, fetchTelemetryData, saveTelemetryData, toggleField, 
 const Telemetry = () => {
   const { deviceId } = useParams();
   const token = localStorage.getItem("token");
-  const dispatch = useDispatch();
   const toast = useRef(null);
-
+  const dispatch = useDispatch();
   const { status, setDeviceId } = useContext(WebSocketContext)
   const { jsonData, loading, error } = useSelector((state) => state.telemetry);
+
 
 
   useEffect(() => {
@@ -47,7 +46,7 @@ const Telemetry = () => {
 
     return (
       <div>
-        <Header />
+        {/* <Header/> */}
         <Toast ref={toast} />
         <div className="json-editor">
           <h2>Telemetry Configuration for Device</h2>
