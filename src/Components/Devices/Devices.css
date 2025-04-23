@@ -36,4 +36,12 @@
     background-color: #f8d7da;
     color: red;
   }
+
+  .delete-btn{
+    cursor: pointer;
+  }
+
+  .delete-btn:hover{
+    cursor: pointer;
+  }
     

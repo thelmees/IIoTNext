@@ -5,6 +5,8 @@ import { Eye, EyeOff } from "lucide-react";
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../Redux/Slices/authSlice';
 import { Message } from 'primereact/message';
+import Consyst from '../../assets/consyst.webp'
+
 
 function Login() {
 
@@ -34,7 +36,8 @@ function Login() {
   return (
     <div className='login-container'>
     <div className='login-content'>
-      <h1>Login</h1>
+      <img src={Consyst}/>
+      {/* <h1>Login Page </h1> */}
       <form action="">
         <div className="login-inputs">
           <div className="login-input">

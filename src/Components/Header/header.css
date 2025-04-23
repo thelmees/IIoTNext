@@ -1,38 +1,23 @@
-.header {
+.app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 15px;
-  background: #05315d;
-  color: #ffffff;
-  position: fixed;
+  background: #05315D;
+  border-bottom: 2px solid #003f6b;
+  padding: 25px 20px;
+  position: sticky;
   top: 0;
-  left: 0;
+  z-index: 1000;
+  height: 40px;
   width: 100%;
-  z-index: 1000; 
+  
 }
 
-.logo {
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
+.device-name {
+  font-size: 20px;
   color: #ffffff;
 }
 
-.menu-icon {
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.menu li {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.app-header img {
+height: 30px;
 }

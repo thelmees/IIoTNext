@@ -3,19 +3,24 @@ import axios from "axios";
 import { API_BASE_URL } from "../../config";
 
 export const fetchAttributes = createAsyncThunk( "attributes/fetchAttributes", 
-    async ({ deviceId, scope, token }, thunkAPI) => {
+    async ({ deviceId, scope},{ rejectWithValue }) => {
+
+      const token = localStorage.getItem('token');
+    if (!token) {
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("selectedDeviceId");
+      window.location.href = "/";
+      return rejectWithValue("Unauthorized");
+    }
+
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/plugins/telemetry/DEVICE/${deviceId}/values/attributes/${scope}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        `${API_BASE_URL}/plugins/telemetry/DEVICE/${deviceId}/values/attributes/${scope}`,{
+          headers: {Authorization: `Bearer ${token}`},
+        });
       return response.data || [];
     } catch (error) {
-      return thunkAPI.rejectWithValue("Failed to fetch attributes");
+      return rejectWithValue("Failed to fetch attributes");
     }
   }
 );
@@ -23,13 +28,13 @@ export const fetchAttributes = createAsyncThunk( "attributes/fetchAttributes",
 const attributesSlice = createSlice({
   name: "attributes",
   initialState: {
-    data: [],
+    attr: [],
     status: "idle",
     error: null,
   },
   reducers: {
     clearAttributes: (state) => {
-      state.data = [];
+      state.attr = [];
       state.status = "idle";
       state.error = null;
     },
@@ -41,7 +46,7 @@ const attributesSlice = createSlice({
       })
       .addCase(fetchAttributes.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = action.payload;
+        state.attr = action.payload;
       })
       .addCase(fetchAttributes.rejected, (state, action) => {
         state.status = "failed";

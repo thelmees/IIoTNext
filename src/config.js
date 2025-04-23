@@ -16,3 +16,21 @@ export const defaultAttributes = {
   };
 
   export const params = "createdTime,info_macaddr,active,lastActivityTime,info_fwversion,info_type"
+
+
+
+  export const menuItems = [
+    {
+      name: "Home",
+      iconName: "home",
+      color: "white",
+      type: "solid",
+      path: "/deviceList",
+      children: [
+        { name: "Telemetry Configuration", path: "/telemetry/:Id" },
+        { name: "Telemetry", path: "/telemetryTable/:Id" },
+        { name: "Attribute", path: "/attributes/:Id" },
+      ],
+    },
+    { name: "Log Out", iconName: "log-out", color: "red", rotate: "180", path: "/" },
+  ];

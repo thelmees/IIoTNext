@@ -6,13 +6,16 @@ import { WebSocketProvider } from './Components/Web Socket/webSocketContext';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './Redux/store';
+import { DeviceProvider } from './DeviceContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <WebSocketProvider>
     <BrowserRouter>
     <Provider store={store}>
+    <DeviceProvider>
     <App />
+    </DeviceProvider>
     </Provider>
     </BrowserRouter>
   </WebSocketProvider>

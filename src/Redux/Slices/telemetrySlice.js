@@ -5,14 +5,25 @@ import { API_BASE_URL, defaultAttributes } from "../../config";
 export const fetchTelemetryData = createAsyncThunk(
   "telemetry/fetchTelemetryData",
   async (deviceId, { rejectWithValue }) => {
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("selectedDeviceId");
+      window.location.href = "/";
+      return rejectWithValue("Unauthorized");
+    }
+
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.get(`${API_BASE_URL}/plugins/telemetry/DEVICE/${deviceId}/values/attributes?keys=telemetry_conf_1`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      let apiData = response.data.length > 0 ? response.data[0].value : {};
-      return { ...defaultAttributes, ...apiData };
+      let apiData = response.data.length > 0 ? response.data[0] : {};
+return {
+  lastUpdateTs: apiData.lastUpdateTs,
+  value: {  ...defaultAttributes,...apiData.value }
+};
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -68,6 +79,7 @@ const telemetrySlice = createSlice({
   name: "telemetry",
   initialState: {
     jsonData: {},
+    lastUpdateTs: null,
     loading: false,
     error: null,
     downloadMessage: null,
@@ -90,7 +102,8 @@ const telemetrySlice = createSlice({
       })
       .addCase(fetchTelemetryData.fulfilled, (state, action) => {
         state.loading = false;
-        state.jsonData = action.payload;
+        state.jsonData = action.payload.value;
+        state.lastUpdateTs = action.payload.lastUpdateTs;
       })
       .addCase(fetchTelemetryData.rejected, (state, action) => {
         state.loading = false;
@@ -107,3 +120,4 @@ const telemetrySlice = createSlice({
 
 export const { updateField, toggleField } = telemetrySlice.actions;
 export default telemetrySlice.reducer;
+

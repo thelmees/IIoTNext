@@ -1,18 +1,22 @@
 import React from "react";
-import Sidebar from "./sidebar";
-import "./sidebar.css";
-import { Outlet } from "react-router-dom";
 import Header from "../Header/header";
+import Sidebar from "./sidebar";
+import { Outlet } from "react-router-dom";
+import "./layout.css";
 
 const Layout = () => {
   return (
-    <div className="container">
-      <Sidebar />
-      <main className="main-content">
-        <Outlet />
-      </main>
+    <div className="layout-container">
+      <Header />
+      <div className="body-section">
+        <Sidebar />
+        <div className="main-content">
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Layout;
+

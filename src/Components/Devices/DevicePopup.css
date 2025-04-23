@@ -36,6 +36,7 @@
   .tab-buttons {
     display: flex;
     margin-bottom: 16px;
+    transition: 0.3s ease-in-out;
   }
   
   .tab-buttons button {
@@ -50,5 +51,12 @@
   .tab-buttons .active {
     background-color: #007bff;
     color: white;
+    transition: 0.3s ease-in-out;
   }
+
+  
+
+  
+
+  
   

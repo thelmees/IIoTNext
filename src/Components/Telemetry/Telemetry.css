@@ -1,8 +1,8 @@
 .json-editor {
   max-width: 900px;
   margin: 0px auto;
-  /* padding: 20px; */
   background: #ffffff;
+  margin-bottom: 20px;
 }
 
 h2 {
@@ -114,4 +114,11 @@ label {
   border-radius: 10px;
   position: relative;
   cursor: pointer;
+}
+
+.json-header{
+  display: flex;
+}
+.json-header h2 {
+  flex: 1;
 }

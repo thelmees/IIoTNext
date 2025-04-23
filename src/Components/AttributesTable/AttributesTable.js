@@ -1,27 +1,32 @@
-// AttributesTable.jsx
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAttributes } from "../../Redux/Slices/attributesSlice";
 import "../TelemetryTable/TelemetryTable.css";
-import "./AttributesTable.css"
+import "./AttributesTable.css";
+import { useAttributesWebSocket } from "../Web Socket/AttributesWebSocket";
+import { useParams } from "react-router-dom";
 
-const AttributesTable = ({ deviceId }) => {
+const AttributesTable = () => {
   const dispatch = useDispatch();
-  const token = localStorage.getItem("token");
-  const { data: devices } = useSelector((state) => state.API);
-
+  const { attr: attribute, status, error } = useSelector((state) => state.attributes);
+  const { attributesData } = useAttributesWebSocket();
   const [scope, setScope] = useState("CLIENT_SCOPE");
   const [search, setSearch] = useState("");
-  const [sortField, setSortField] = useState("lastUpdateTs");
+  const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
+  const { deviceId } = useParams()
 
-  const { data: attributes, status, error } = useSelector((state) => state.attributes);
 
   useEffect(() => {
-    if (deviceId) {
-      dispatch(fetchAttributes({ deviceId, scope, token }));
+    if (deviceId && scope) {
+      dispatch(fetchAttributes({ deviceId, scope }));
     }
-  }, [deviceId, scope, dispatch, token]);
+
+  }, [deviceId, dispatch, scope, attributesData]);
+
+  useEffect(() => {
+    // console.log("Attributes state updated:", { attributes, status, error});
+  }, [attribute, status, error]);
 
   const handleSort = (field) => {
     if (field === sortField) {
@@ -36,10 +41,8 @@ const AttributesTable = ({ deviceId }) => {
     navigator.clipboard.writeText(text);
   };
 
-  const filteredAttributes = attributes
-    .filter((attr) =>
-      attr.key.toLowerCase().includes(search.toLowerCase())
-    )
+  const filteredAttributes = (attribute || [])
+    .filter((attr) => attr?.key?.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
       const aValue = a[sortField];
       const bValue = b[sortField];
@@ -53,39 +56,52 @@ const AttributesTable = ({ deviceId }) => {
       return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
     });
 
-  const selectedDevice = devices.find(device => device.id.id === deviceId);
 
   return (
     <div className="table-container Attributes-container">
+      <h2>Attributes</h2>
 
-      {selectedDevice && (
-        <h2>{selectedDevice.name}</h2>
+      {error && (
+        <div style={{ color: "red" }}>
+          Error: {error.message || JSON.stringify(error)}
+        </div>
       )}
-      <div className="sticky-controls">
-        <select
-          value={scope}
-          onChange={(e) => setScope(e.target.value)}
-          className="search-input"
-        >
-          <option value="CLIENT_SCOPE">Client attribute</option>
-          <option value="SERVER_SCOPE">Server attribute</option>
-          <option value="SHARED_SCOPE">Shared attribute</option>
-        </select>
 
+      <div className="sticky-controls">
         <input
           className="search-input"
           type="text"
-          placeholder="Search key"
+          placeholder="Search keys"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            e.preventDefault();
+            setSearch(e.target.value);
+          }}
         />
+        <div className="scope-tabs">
+          {["CLIENT_SCOPE", "SERVER_SCOPE", "SHARED_SCOPE"].map((s) => (
+            <button
+              key={s}
+              className={`scope-tab ${scope === s ? "activee" : ""}`}
+              onClick={() => setScope(s)}
+            >
+              {s === "CLIENT_SCOPE"
+                ? "Client"
+                : s === "SERVER_SCOPE"
+                  ? "Server"
+                  : "Shared"}
+            </button>
+          ))}
+        </div>
+
       </div>
 
       <table className="attributs-table">
         <thead className="sticky-header">
           <tr>
             <th onClick={() => handleSort("lastUpdateTs")}>
-              Last Update Time {sortField === "lastUpdateTs" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
+              Last update time{" "}
+              {sortField === "lastUpdateTs" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
             </th>
             <th onClick={() => handleSort("key")}>
               Key {sortField === "key" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
@@ -94,9 +110,7 @@ const AttributesTable = ({ deviceId }) => {
           </tr>
         </thead>
         <tbody>
-          {status === "loading" ? (
-            <tr><td colSpan="3">Loading...</td></tr>
-          ) : filteredAttributes.length > 0 ? (
+          { filteredAttributes.length > 0 ? (
             filteredAttributes.map((attr, index) => (
               <tr key={index}>
                 <td>{new Date(attr.lastUpdateTs).toLocaleString()}</td>
@@ -106,7 +120,7 @@ const AttributesTable = ({ deviceId }) => {
                     className="copy-btn"
                     onClick={() => copyToClipboard(attr.key)}
                   >
-                    <box-icon name='copy' size="xs" ></box-icon>
+                    <box-icon name="copy" size="xs"></box-icon>
                   </button>
                 </td>
                 <td className="copyable-cell">
@@ -117,13 +131,15 @@ const AttributesTable = ({ deviceId }) => {
                   </span>
                   <button
                     className="copy-btn"
-                    onClick={() => copyToClipboard(
-                      typeof attr.value === "object"
-                        ? JSON.stringify(attr.value)
-                        : String(attr.value)
-                    )}
+                    onClick={() =>
+                      copyToClipboard(
+                        typeof attr.value === "object"
+                          ? JSON.stringify(attr.value)
+                          : String(attr.value)
+                      )
+                    }
                   >
-                    <box-icon name='copy' size="xs" ></box-icon>
+                    <box-icon name="copy" size="xs"></box-icon>
                   </button>
                 </td>
               </tr>

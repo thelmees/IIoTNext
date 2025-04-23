@@ -14,6 +14,7 @@ import { InputText } from 'primereact/inputtext';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDevices } from '../../Redux/Slices/deviceSlice';
 import { useWebSocket } from '../Web Socket/deviceListWebSocket';
+import { useDevice } from '../../DeviceContext';
 
 function DeviceList() {
   const [searchValues, setSearchValues] = useState({});
@@ -22,6 +23,7 @@ function DeviceList() {
   const dispatch = useDispatch()
   const {data:devices,loading,error} = useSelector((state)=>state.API)
   const {status} = useWebSocket()
+  const { setSelectedDeviceId ,setSelectedDeviceName  } = useDevice();
 
   useEffect(() => {
     dispatch(fetchDevices())
@@ -64,6 +66,12 @@ function DeviceList() {
     setSearchValues((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleRowClick = (device) => {
+    setSelectedDeviceId(device.id.id); 
+    setSelectedDeviceName(device.name);
+    navigate(`/telemetry/${device.id.id}`);
+  };
+
   const filteredDevices = transformedDevices.filter((device) =>
     Object.keys(searchValues).every((key) =>
       device[key]?.toString().toLowerCase().includes(searchValues[key]?.toLowerCase() || "")
@@ -91,7 +99,7 @@ function DeviceList() {
         </OverlayPanel>
       </div> */}
       <DataTable value={filteredDevices} tableStyle={{ minWidth: '50rem' }} className="custom-table" 
-        scrollable scrollHeight='370px' onRowClick={(e) => navigate(`/telemetry/${e.data.id.id}`)}>
+        scrollable scrollHeight='370px' onRowClick={(e)=>handleRowClick(e.data)}>
         <Column field="name" header={headerFilter}/> 
         <Column field="createdOn" header="Created On" sortable ></Column>
         <Column field="macId" header="Mac ID" sortable></Column>

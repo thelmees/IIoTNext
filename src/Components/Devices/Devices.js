@@ -1,22 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../DeviceList/deviceList.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDevices } from "../../Redux/Slices/deviceSlice";
 import DevicePopup from "../Devices/DevicePopup";
-import "./Devices.css"
+import "./Devices.css";
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 
 const Devices = () => {
+
   const dispatch = useDispatch();
   const { data: devices } = useSelector((state) => state.API);
+
+  const [selectedDeviceId, setSelectedDeviceId] = useState(() => {
+    return sessionStorage.getItem("selectedDeviceId") || null;
+  });
 
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState("createdTime");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [selectedDeviceId, setSelectedDeviceId] = useState(null); 
 
   useEffect(() => {
     dispatch(fetchDevices());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedDeviceId) {
+      sessionStorage.setItem("selectedDeviceId", selectedDeviceId);
+    } else {
+      sessionStorage.removeItem("selectedDeviceId");
+    }
+  }, [selectedDeviceId]);
 
   const formatCreatedTime = (timestamp) => {
     if (!timestamp) return "N/A";
@@ -49,9 +64,6 @@ const Devices = () => {
       return valA < valB ? 1 : -1;
     });
 
-    console.log(filteredDevices);
-    
-
   const handleSort = (field) => {
     setSortField(field);
     setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
@@ -60,13 +72,13 @@ const Devices = () => {
   return (
     <div className="table-container">
       <div className="sticky-container">
-      <input
-        className="search-input"
-        type="text"
-        placeholder="Search by name"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search by name"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
       <table>
         <thead className="tele-header">
@@ -82,7 +94,11 @@ const Devices = () => {
         <tbody>
           {filteredDevices.length > 0 ? (
             filteredDevices.map((device, index) => (
-              <tr key={index} onClick={() => setSelectedDeviceId(device.id)} className="device-table">
+              <tr
+                key={index}
+                onClick={() => setSelectedDeviceId(device.id)}
+                className="device-table"
+              >
                 <td>{device.createdTime}</td>
                 <td>{device.name}</td>
                 <td>{device.profile}</td>

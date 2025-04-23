@@ -1,0 +1,23 @@
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .body-section {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  .sidebar {
+    height: 100%;
+    overflow-y: auto;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  

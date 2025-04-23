@@ -5,6 +5,8 @@ import DeviceList from './Components/DeviceList/deviceList';
 import Telemetry from './Components/Telemetry/Telemetry';
 import Layout from './Components/Sidebar/layout';
 import Devices from './Components/Devices/Devices';
+import TelemetryTable from './Components/TelemetryTable/TelemetryTable';
+import AttributesTable from './Components/AttributesTable/AttributesTable';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/deviceList" element={<DeviceList />} />
           <Route path="/device" element={<Devices/>} />
           <Route path="/telemetry/:deviceId" element={<Telemetry />} />
+          <Route path="/telemetryTable/:deviceId" element={<TelemetryTable/>} />
+          <Route path="/attributes/:deviceId" element={<AttributesTable/>} />
         </Route>
       </Routes>
     </div>

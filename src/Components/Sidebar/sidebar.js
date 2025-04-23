@@ -1,23 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import "./sidebar.css";
+import { menuItems } from "../../config";
+import { useDevice } from "../../DeviceContext";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const location = useLocation();
+  const path = location.pathname;
+  const segment = path.split('/').filter(Boolean)[0];
+  const [activeIndex, setActiveIndex] = useState();
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [animate, setAnimate] = useState(false);
   const [isSmall, setIsSmall] = useState(window.innerHeight < 550);
+  const { selectedDeviceId, setSelectedDeviceId,setSelectedDeviceName } = useDevice();
 
-  const menuItems = [
-    { name: "Dashboards", iconName: "dashboard", color: "white", type: "solid", path: "/deviceList" },
-    { name: "Devices", iconName: "devices", color: "white", path: "/device" },
-    { name: "Log Out", iconName: "log-out", color: "red", rotate: "180", path: "/" },
-  ];
+
+  useEffect(() => {
+    const path = location.pathname;
+    const segment = path.split("/").filter(Boolean)[0] || "";
+    const index = menuItems.findIndex(
+      (item) => item.path === `/${segment}` || (segment === "" && item.path === "/")
+    );
+    setActiveIndex(index !== -1 ? index : 0);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleResize = () => {
       setIsSmall(window.innerHeight < 550);
+      setActiveIndex(segment)
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -31,19 +42,26 @@ const Sidebar = () => {
 
   const handleClick = (item, index) => {
     setActiveIndex(index);
-
+  
+    if (item.path === "/deviceList") {
+      setSelectedDeviceId(null);
+      setSelectedDeviceName(null)
+    }
+  
     if (item.name === "Log Out") {
       localStorage.removeItem("token");
+      setSelectedDeviceId(null);
+      sessionStorage.removeItem("selectedDeviceId");
     }
 
     navigate(item.path);
   };
-
+  
   return (
     <div className="sidebar expanded">
-      {menuItems.map((item, index) => (
+    {menuItems.map((item, index) => (
+      <React.Fragment key={index}>
         <div
-          key={index}
           className={`boxicon-container expanded-boxicon-container`}
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
@@ -62,9 +80,25 @@ const Sidebar = () => {
             {item.name}
           </p>
         </div>
-      ))}
-    </div>
-  );
+  
+        {item.children && selectedDeviceId && (
+          <div className="submenu">
+            {item.children.map((child, childIndex) => (
+              <div
+                key={childIndex}
+                className="submenu-item"
+                onClick={() => navigate(child.path.replace(":Id", selectedDeviceId))}
+              >
+                <p className="submenu-text">{child.name}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </React.Fragment>
+    ))}
+  </div>
+  
+  );  
 };
 
 export default Sidebar;
