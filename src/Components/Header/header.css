@@ -21,3 +21,55 @@
 .app-header img {
 height: 30px;
 }
+
+.logo-link {
+  margin-right: 20px;
+}
+
+.logo {
+  height: 40px;
+  cursor: pointer;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  gap: 8px;
+  color: #ccc;
+  margin-left: 80px;
+  transition: ease-in-out 0.2s;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #d0d6ff;
+  text-decoration: none;
+  transition: color 0.2s;
+  transition: ease-in-out 0.2s;
+}
+
+.breadcrumb-item:hover {
+  color: #ffffff;
+}
+
+.breadcrumb-icon {
+  color: #d0d6ff;
+}
+
+.breadcrumb-separator {
+  color: #aaa;
+}
+
+.device-name {
+  margin-left: auto;
+  font-weight: bold;
+  color: #ffffff;
+}
+.device-name {
+  margin-left: auto;
+  font-weight: bold;
+  color: #ffffff;
+}

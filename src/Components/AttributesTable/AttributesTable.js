@@ -4,7 +4,7 @@ import { fetchAttributes } from "../../Redux/Slices/attributesSlice";
 import "../TelemetryTable/TelemetryTable.css";
 import "./AttributesTable.css";
 import { useAttributesWebSocket } from "../Web Socket/AttributesWebSocket";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AttributesTable = () => {
   const dispatch = useDispatch();
@@ -12,20 +12,22 @@ const AttributesTable = () => {
   const { attributesData } = useAttributesWebSocket();
   const [scope, setScope] = useState("CLIENT_SCOPE");
   const [search, setSearch] = useState("");
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortField, setSortField] = useState("key");
+  const [sortOrder, setSortOrder] = useState("asc");
   const { deviceId } = useParams()
+  const navigate = useNavigate()
 
 
   useEffect(() => {
     if (deviceId && scope) {
-      dispatch(fetchAttributes({ deviceId, scope }));
+      dispatch(fetchAttributes({ deviceId, scope }));      
     }
+
 
   }, [deviceId, dispatch, scope, attributesData]);
 
   useEffect(() => {
-    // console.log("Attributes state updated:", { attributes, status, error});
+    // console.log("Attributes state updated:", { attribute, status, error});
   }, [attribute, status, error]);
 
   const handleSort = (field) => {

@@ -26,7 +26,6 @@ export const useAttributesWebSocket = () => {
     }
 
     if (webSocketRef.current && webSocketRef.current.readyState !== WebSocket.CLOSED) {
-      console.log("WebSocket already connected");
       return;
     }
 

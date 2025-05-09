@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import "./Telemetry.css";
-import Header from "../Header/header";
 import { Toast } from "primereact/toast";
 import { WebSocketContext } from "../Web Socket/webSocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { useDevice } from '../../DeviceContext'
-import { downloadTelemetry, fetchTelemetryData, saveTelemetryData, toggleField, updateField } from "../../Redux/Slices/telemetrySlice";
+import { downloadConfiguration, fetchConfigurationData, saveConfiguration, toggleField, updateField } from "../../Redux/Slices/configurationSlice";
+import DownloadStatusBar from "../StatusBar/StatusBar";
+import { DownloadWebSocketProvider } from "../Web Socket/DownloadStatusWebSocket";
 
 const Telemetry = () => {
   const { deviceId } = useParams();
@@ -14,14 +15,15 @@ const Telemetry = () => {
   const toast = useRef(null);
   const dispatch = useDispatch();
   const { status, setDeviceId } = useContext(WebSocketContext)
-  const { jsonData, loading, error } = useSelector((state) => state.telemetry);
+  const { jsonData, loading, error } = useSelector((state) => state.configuration);
+  const key = "telemetry_conf_1"
 
   useEffect(() => {
     if (deviceId) {
       setDeviceId(deviceId);
-      dispatch(fetchTelemetryData(deviceId))
+      dispatch(fetchConfigurationData({deviceId, key}))
     }
-  }, [deviceId, setDeviceId, dispatch]);
+  }, [deviceId, key, setDeviceId, dispatch]);
 
   const handleChange = (e) => {
     dispatch(updateField({ name: e.target.name, value: e.target.value }))
@@ -33,41 +35,35 @@ const Telemetry = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    await dispatch(saveTelemetryData({ deviceId, jsonData }));
+    await dispatch(saveConfiguration({ deviceId, jsonData,  key }));
     toast.current.show({ severity: "success", summary: "Success", detail: "Configuration Saved", life: 2000 });
   }
 
   const handleDownload = async (e) => {
     e.preventDefault();
-    await dispatch(downloadTelemetry(deviceId))
+    await dispatch(downloadConfiguration(deviceId))
     toast.current.show({ severity: "success", summary: "Success", detail: "Download Successful", life: 2000 });
   };
 
   return (
-    <div>
+    <div className="telemetry-table">
       <Toast ref={toast} />
+        <div className="status-container">
+          <div>
+          <button className={`status-button ${!status ? "offline" : ""}`}>
+            {status ? "ONLINE" : "OFFLINE"}
+          </button>
+          </div>
+          <div>
+          <DownloadWebSocketProvider>
+            <DownloadStatusBar deviceId={deviceId}/>
+          </DownloadWebSocketProvider>
+          </div>
+        </div>
       <div className="json-editor">
         <div className="json-header">
           <h2>Telemetry Configuration for Device</h2>
         </div>
-
-        <div className="status-container">
-          <button
-            className="status-button"
-            style={{
-              backgroundColor: status ? "green" : "red",
-              color: "white",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            {status ? "Online" : "Offline"}
-          </button>
-        </div>
-
         <form>
           {Object.keys(jsonData).map((key) => (
             <div className="form-group" key={key}>

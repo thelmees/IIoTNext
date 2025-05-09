@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
 
 export const WebSocketContext = createContext(null);
 
@@ -37,7 +36,7 @@ export const WebSocketProvider = ({ children }) => {
     ws.onmessage = (event) => {
       try {
         const receivedData = JSON.parse(event.data);
-        console.log("WebSocket Message:", receivedData);
+        // console.log("WebSocket Message:", receivedData);
 
         if (receivedData.data?.active?.length > 0) {
           const statusValue = receivedData?.data?.active[0][1];

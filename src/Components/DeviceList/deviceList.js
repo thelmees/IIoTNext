@@ -2,12 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import './deviceList.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { OverlayPanel } from 'primereact/overlaypanel';
 import DonutChart from '../Chart/Chart';
 import Map from '../Map/Map';
 import { InputText } from 'primereact/inputtext';
@@ -18,24 +17,25 @@ import { useDevice } from '../../DeviceContext';
 
 function DeviceList() {
   const [searchValues, setSearchValues] = useState({});
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const dispatch = useDispatch()
-  const {data:devices,loading,error} = useSelector((state)=>state.API)
-  const {status} = useWebSocket()
-  const { setSelectedDeviceId ,setSelectedDeviceName  } = useDevice();
+  const { data: devices, loading, error } = useSelector((state) => state.API)
+  const { status } = useWebSocket()
+  const { setSelectedDeviceId, setSelectedDeviceName, setSelectedComponent } = useDevice();
 
   useEffect(() => {
     dispatch(fetchDevices())
     
-  }, [dispatch,status]);
+    if(pathname === '/deviceList'){
+      sessionStorage.removeItem("selectedDeviceName");
+      sessionStorage.removeItem("selectedDeviceId");
+    }
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate('/');
-  };
+  }, [dispatch, status,pathname]);
 
-  const formatCreatedTime = (timestamp) => { 
+  const formatCreatedTime = (timestamp) => {
     if (!timestamp) return "Invalid Data";
     const date = new Date(timestamp);
     return date.toISOString().replace("T", " ").split(".")[0];
@@ -67,9 +67,10 @@ function DeviceList() {
   };
 
   const handleRowClick = (device) => {
-    setSelectedDeviceId(device.id.id); 
+    setSelectedDeviceId(device.id.id);
     setSelectedDeviceName(device.name);
-    navigate(`/telemetry/${device.id.id}`);
+    setSelectedComponent("Telemetry Configuration");
+    navigate(`/Telemetry Configuration/${device.id.id}`);
   };
 
   const filteredDevices = transformedDevices.filter((device) =>
@@ -79,10 +80,10 @@ function DeviceList() {
   );
 
   const headerFilter = (
-    <div  style={{ display: "flex", flexDirection: "column" }}>
-    Device Name
-    <InputText style={{marginTop:"10px",width:"150px",height:"20px"}} onChange={(e) => handleSearchChange("name", e.target.value)} placeholder="search" />
-  </div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      Device Name
+      <InputText style={{ marginTop: "10px", width: "150px", height: "20px" }} onChange={(e) => handleSearchChange("name", e.target.value)} placeholder="search" />
+    </div>
   );
 
   return (
@@ -98,9 +99,9 @@ function DeviceList() {
           </ul>
         </OverlayPanel>
       </div> */}
-      <DataTable value={filteredDevices} tableStyle={{ minWidth: '50rem' }} className="custom-table" 
-        scrollable scrollHeight='370px' onRowClick={(e)=>handleRowClick(e.data)}>
-        <Column field="name" header={headerFilter}/> 
+      <DataTable value={filteredDevices} tableStyle={{ minWidth: '50rem' }} className="custom-table"
+        scrollable scrollHeight='370px' onRowClick={(e) => handleRowClick(e.data)}>
+        <Column field="name" header={headerFilter} />
         <Column field="createdOn" header="Created On" sortable ></Column>
         <Column field="macId" header="Mac ID" sortable></Column>
         <Column field="status" header="Status" body={(rowData) => (

@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTelemetryData } from "../../Redux/Slices/telemetrySlice";
+import { fetchConfigurationData } from "../../Redux/Slices/configurationSlice";
 import "./TelemetryTable.css";
 import { TelemetryWebSocket } from "../Web Socket/TelemetryWebSocket";
 import { useParams } from "react-router-dom";
 
 const TelemetryTable = () => {
   const dispatch = useDispatch();
-  const { jsonData, lastUpdateTs } = useSelector((state) => state.telemetry);
+  const { jsonData, lastUpdateTs } = useSelector((state) => state.configuration);
   const {  telemetryData } = TelemetryWebSocket()
   const { deviceId } = useParams()
+  const key = "telemetry_conf_1"
 
   const [search, setSearch] = useState("");
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortField, setSortField] = useState("key");
+  const [sortOrder, setSortOrder] = useState("asc");
   
 
   useEffect(() => {
     if (deviceId) {
-      dispatch(fetchTelemetryData(deviceId));
+      dispatch(fetchConfigurationData({deviceId,key}));
     }
 
-  }, [deviceId, dispatch, telemetryData]);
+  }, [deviceId, key, dispatch, telemetryData]);
 
   const filteredData = Object.entries(jsonData || {})
     .filter(([key]) => key.toLowerCase().includes(search.toLowerCase()))

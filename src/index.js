@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './Redux/store';
 import { DeviceProvider } from './DeviceContext';
+import { DownloadWebSocketProvider } from './Components/Web Socket/DownloadStatusWebSocket';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

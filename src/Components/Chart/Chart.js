@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import axios from "axios";
+import { Doughnut} from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, RadialLinearScale } from "chart.js";
 import { useDispatch, useSelector } from "react-redux";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -30,6 +29,7 @@ const DonutChart = () => {
         borderWidth: 1,
         hoverBorderWidth: 6,
         hoverOffset: 4,
+        borderRadius:5,
       },
     ],
   };
@@ -38,13 +38,14 @@ const DonutChart = () => {
     responsive: true,
     maintainAspectRatio: false,
     cutout: "70%",
-
+    
   };
+  
 
 
 
   return (
-    <div style={{ width: "290px", height: "250px", marginTop: '20px', transition: "box-shadow 0.3s ease-in-out" }}>
+    <div style={{ width: "290px", height: "230px", marginTop: '20px', transition: "box-shadow 0.3s ease-in-out" }}>
       <Doughnut data={data} options={options} />
     </div>
   );

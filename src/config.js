@@ -1,36 +1,101 @@
 export const API_BASE_URL = "https://app.iiotnext.com/api"
 
-export const defaultAttributes = {
-    onchange_interval: "",
-    mqtt2: 0,
-    onchange_send: 0,
-    onchangetags: "",
-    mqtt_host: "",
-    mqtt_port: "",
-    mqtt_user: "",
-    mqtt_pass: "",
-    mqtt_topic: "",
-    mqtt_is_secure: 0,
-    mqtt_keepalive: "",
-    mqtt_qos: "",
-  };
+export const defaultTelemetryAttributes = {
+  onchange_send: 0,
+  onchange_interval: "",
+  onchangetags: "",
+  mqtt2: 0,
+  mqtt_host: "",
+  mqtt_port: "",
+  mqtt_user: "",
+  mqtt_pass: "",
+  mqtt_topic: "",
+  mqtt_is_secure: 0,
+  mqtt_keepalive: "",
+  mqtt_qos: "",
+};
 
-  export const params = "createdTime,info_macaddr,active,lastActivityTime,info_fwversion,info_type"
+export const defaultBasicAttributes = {
+    factory_firmware          : 0,
+    wan_reconnect_timeout     : "",
+    rs485_baudrate            : "",
+    rs485_dynamic             : 0,
+    sendinfo_interval         : "",
+    custom_enabled            : 0,
+    default_sim               : 0,
+    is_sim_one                : 0,
+    is_sim_two                : 0,
+    net_disconnect_threshold  : "",
+    gps_enabled               : 0,
+    gps_interval              : "",
+    dht20_enabled             : 0,
+    mqtt_port                 : "",
+    mqtt_is_secure            : 0,
+    mqtt_qos                  : 0,
+    mqtt_keepalive            : "",
+    mqtt_buffersize           : "",
+    mqtt_send_wait_ms         : "",
+    tags_docsize              : "",
+    tags_max                  : "",
+    tags_publish_limit        : "",
+    gsm_doc_buff_size         : "",
+    gsm_max_count             : "",
+    modbus_doc_buff_size      : "",
+    auto_doc_size             : 0,
+    powercycle                : 0,
+    temp_cpu_read_interval    : "",
+    monitor_interval          : "",
+    timestamp                 : 0,
+    tsynch_interval           : "",
+    timezone                  : 0,
+    time_port                 : "",
+    reconnect_timeout         : "",
+    reboot_timeout            : "",
+    download_buf_size_wifi    : "",
+    download_buf_size_gsm     : "",
+    provision_key             : "",
+    provision_secret          : "",
+    sms_status_num            : "",
+    network_type              : "",
+    ntpserver                 : "",
+    mqtt_host                 : "",
+    time_server               : "",
+    time_path                 : "",
+    rs485_settings            : ""
+}
 
+export const params = "createdTime,info_macaddr,active,lastActivityTime,info_fwversion,info_type"
 
+export const menuItems = [
+  {
+    name: "Home",
+    iconName: "home",
+    color: "white",
+    type: "solid",
+    path: "/deviceList",
+    children: [
+      { name: "Telemetry Configuration", path: "/Telemetry%20Configuration/:Id" },
+      { name: "Basic Configuration", path: "/Basic%20Configuration/:Id" },
+      { name: "Telemetry", path: "/telemetry/:Id" },
+      { name: "Attributes", path: "/attributes/:Id" },
+    ],
+  },
+  { name: "Log Out", iconName: "log-out", color: "red", rotate: "180", path: "/" },
+];
 
-  export const menuItems = [
-    {
-      name: "Home",
-      iconName: "home",
-      color: "white",
-      type: "solid",
-      path: "/deviceList",
-      children: [
-        { name: "Telemetry Configuration", path: "/telemetry/:Id" },
-        { name: "Telemetry", path: "/telemetryTable/:Id" },
-        { name: "Attribute", path: "/attributes/:Id" },
-      ],
-    },
-    { name: "Log Out", iconName: "log-out", color: "red", rotate: "180", path: "/" },
-  ];
+export const toggleFields = [
+  "factory_firmware",
+  "rs485_dynamic",
+  "custom_enabled",
+  "default_sim",
+  "is_sim_one",
+  "is_sim_two",
+  "gps_enabled",
+  "dht20_enabled",
+  "mqtt_is_secure",
+  "auto_doc_size",
+  "powercycle",
+  "timestamp",
+  "timezone",
+  "mqtt_qos"
+];

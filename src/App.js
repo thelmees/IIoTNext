@@ -7,6 +7,7 @@ import Layout from './Components/Sidebar/layout';
 import Devices from './Components/Devices/Devices';
 import TelemetryTable from './Components/TelemetryTable/TelemetryTable';
 import AttributesTable from './Components/AttributesTable/AttributesTable';
+import BasicConfiguration from "./Components/Basic Configuration/BasicConfiguration"
 
 function App() {
   return (
@@ -17,9 +18,10 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/deviceList" element={<DeviceList />} />
           <Route path="/device" element={<Devices/>} />
-          <Route path="/telemetry/:deviceId" element={<Telemetry />} />
-          <Route path="/telemetryTable/:deviceId" element={<TelemetryTable/>} />
+          <Route path="/Telemetry Configuration/:deviceId" element={<Telemetry />} />
+          <Route path="/telemetry/:deviceId" element={<TelemetryTable/>} />
           <Route path="/attributes/:deviceId" element={<AttributesTable/>} />
+          <Route path="/basic Configuration/:deviceId" element={<BasicConfiguration/>} />
         </Route>
       </Routes>
     </div>

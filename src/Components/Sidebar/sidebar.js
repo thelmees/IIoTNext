@@ -13,7 +13,7 @@ const Sidebar = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [animate, setAnimate] = useState(false);
   const [isSmall, setIsSmall] = useState(window.innerHeight < 550);
-  const { selectedDeviceId, setSelectedDeviceId,setSelectedDeviceName } = useDevice();
+  const { selectedDeviceId, setSelectedDeviceId, setSelectedDeviceName, setSelectedComponent } = useDevice();
 
 
   useEffect(() => {
@@ -42,12 +42,13 @@ const Sidebar = () => {
 
   const handleClick = (item, index) => {
     setActiveIndex(index);
-  
+    setSelectedComponent(item.name)
+
     if (item.path === "/deviceList") {
       setSelectedDeviceId(null);
       setSelectedDeviceName(null)
     }
-  
+
     if (item.name === "Log Out") {
       localStorage.removeItem("token");
       setSelectedDeviceId(null);
@@ -56,49 +57,56 @@ const Sidebar = () => {
 
     navigate(item.path);
   };
-  
+
   return (
     <div className="sidebar expanded">
-    {menuItems.map((item, index) => (
-      <React.Fragment key={index}>
-        <div
-          className={`boxicon-container expanded-boxicon-container`}
-          onMouseEnter={() => setHoveredIndex(index)}
-          onMouseLeave={() => setHoveredIndex(null)}
-          onClick={() => handleClick(item, index)}
-        >
-          <box-icon
-            className={`boxicon ${activeIndex === index ? "active" : ""}`}
-            size={isSmall ? "sm" : "md"}
-            name={item.iconName}
-            type={item.type}
-            color={hoveredIndex === index || activeIndex === index ? "white" : item.color}
-            animation={activeIndex === index && animate ? "tada" : ""}
-            rotate={item.rotate}
-          ></box-icon>
-          <p className={`description show-description ${activeIndex === index ? "active-description" : ""}`}>
-            {item.name}
-          </p>
-        </div>
-  
-        {item.children && selectedDeviceId && (
-          <div className="submenu">
-            {item.children.map((child, childIndex) => (
-              <div
-                key={childIndex}
-                className="submenu-item"
-                onClick={() => navigate(child.path.replace(":Id", selectedDeviceId))}
-              >
-                <p className="submenu-text">{child.name}</p>
-              </div>
-            ))}
+      {menuItems.map((item, index) => (
+        <React.Fragment key={index}>
+          <div
+            className={`boxicon-container expanded-boxicon-container`}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => handleClick(item, index)}
+          >
+            <box-icon
+              className={`boxicon ${activeIndex === index ? "active" : ""}`}
+              size={isSmall ? "sm" : "md"}
+              name={item.iconName}
+              type={item.type}
+              color={hoveredIndex === index || activeIndex === index ? "white" : item.color}
+              animation={activeIndex === index && animate ? "tada" : ""}
+              rotate={item.rotate}
+            ></box-icon>
+            <p className={`description show-description ${activeIndex === index ? "active-description" : ""}`}>
+              {item.name}
+            </p>
           </div>
-        )}
-      </React.Fragment>
-    ))}
-  </div>
-  
-  );  
+
+          {item.children && selectedDeviceId && (
+            <div className="submenu">
+              {item.children.map((child, childIndex) => {
+                const childPath = child.path.replace(":Id", selectedDeviceId);
+                const isActive = location.pathname === childPath;
+                return (
+                  <div
+                    key={childIndex}
+                    className={`submenu-item ${isActive ? "submenu-item-active" : ""}`}
+                    onClick={() => {
+                      navigate(child.path.replace(":Id", selectedDeviceId))
+                      setSelectedComponent(child.name)
+                    }}
+                  >
+                    <p className="submenu-text">{child.name}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </React.Fragment>
+      ))}
+    </div>
+
+  );
 };
 
 export default Sidebar;

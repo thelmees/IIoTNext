@@ -35,10 +35,10 @@ label {
 
 .switch {
   position: relative;
-  flex: none; 
+  flex: none;
   display: inline-block;
   width: 3.3em;
-  height: 1.8em 
+  height: 1.8em
 }
 
 .switch input {
@@ -72,21 +72,21 @@ label {
   transition: .4s;
 }
 
-.switch input:checked + .slider {
+.switch input:checked+.slider {
   background-color: #21cc4c;
 }
 
-.switch input:focus + .slider {
+.switch input:focus+.slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-.switch input:checked + .slider:before {
+.switch input:checked+.slider:before {
   transform: translateX(1.5em);
 }
 
-.telemetry-buttons{
+.telemetry-buttons {
   display: flex;
-  flex: 1 ;
+  flex: 1;
   gap: 20px;
 }
 
@@ -116,9 +116,28 @@ label {
   cursor: pointer;
 }
 
-.json-header{
+.status-container{
+  display: flex;
+  justify-content: space-between;
+}
+
+.status-button {
+  background: #31A95E;
+  color: white;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 7px;
+  font-size: 16px;
+  font-weight:600;
+}
+.offline{
+  background: #E5312D;
+}
+
+.json-header {
   display: flex;
 }
+
 .json-header h2 {
   flex: 1;
 }

@@ -8,8 +8,8 @@ export const fetchAttributes = createAsyncThunk( "attributes/fetchAttributes",
       const token = localStorage.getItem('token');
     if (!token) {
       localStorage.removeItem("token");
-      sessionStorage.removeItem("selectedDeviceId");
       window.location.href = "/";
+      sessionStorage.removeItem("selectedDeviceId");
       return rejectWithValue("Unauthorized");
     }
 

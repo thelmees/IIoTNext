@@ -15,7 +15,7 @@ const Map = () => {
         popupAnchor: [0, -40],
       });
   return (
-    <MapContainer center={[10.104086913961135, 76.37131958289879]} zoom={12} zoomControl={false} style={{ height: "270px", width: "100%" }}>
+    <MapContainer center={[10.104086913961135, 76.37131958289879]} zoom={12} zoomControl={false} style={{ height: "250px", width: "100%" }}>
       <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <Marker position={[10.104086913961135, 76.37131958289879]} icon={customIcon}>
         <Popup>Dubai</Popup>
