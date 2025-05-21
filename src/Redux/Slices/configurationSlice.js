@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL, defaultBasicAttributes, defaultTelemetryAttributes } from "../../config"; 
+import { API_BASE_URL, defaultAttributesMap, defaultBasicAttributes, defaultTelemetryAttributes } from "../../config";
 
 export const fetchConfigurationData = createAsyncThunk(
   "configuration/fetchTelemetryData",
-  async ({deviceId, key}, { rejectWithValue }) => {
+  async ({ deviceId, key }, { rejectWithValue }) => {
 
     const token = localStorage.getItem('token');
     if (!token) {
@@ -20,13 +20,14 @@ export const fetchConfigurationData = createAsyncThunk(
       });
 
       let apiData = response.data.length > 0 ? response.data[0] : {};
-      const defaults = key === "telemetry_conf_1" ? defaultTelemetryAttributes : defaultBasicAttributes;
+      const defaults = defaultAttributesMap[key] || {};
 
-return {
-  lastUpdateTs: apiData.lastUpdateTs,
-  value: {  ...defaults,...apiData.value }
-};
+      return {
+        lastUpdateTs: apiData.lastUpdateTs,
+        value: { ...defaults, ...apiData.value }
+      };
     } catch (error) {
+      window.location.href = "/";
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -37,7 +38,7 @@ export const saveConfiguration = createAsyncThunk(
   async ({ deviceId, jsonData, key }, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const payload = { [key] : jsonData };
+      const payload = { [key]: jsonData };
 
       await axios.post(`${API_BASE_URL}/plugins/telemetry/${deviceId}/SERVER_SCOPE`, payload, {
         headers: {
@@ -48,6 +49,7 @@ export const saveConfiguration = createAsyncThunk(
 
       return jsonData;
     } catch (error) {
+      console.log(error);
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -72,6 +74,7 @@ export const downloadConfiguration = createAsyncThunk(
 
       return "Download successful";
     } catch (error) {
+      console.log(error);
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -109,6 +112,12 @@ const telemetrySlice = createSlice({
       })
       .addCase(fetchConfigurationData.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(saveConfiguration.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      .addCase(downloadConfiguration.rejected, (state, action) => {
         state.error = action.payload;
       })
       .addCase(saveConfiguration.fulfilled, (state, action) => {

@@ -16,8 +16,19 @@ const Configuration = () => {
   const toast = useRef(null);
   const dispatch = useDispatch();
   const { status, setDeviceId } = useContext(WebSocketContext);
-  const { jsonData } = useSelector((state) => state.configuration);
+  const { jsonData, error } = useSelector((state) => state.configuration);
   const key = "basic_conf_1"
+
+    useEffect(() => {
+  if (error) {
+    toast.current?.show({
+      severity: "error",
+      summary: "Error",
+      detail: typeof error === 'string' ? error : "Something went wrong",
+      life: 3000,
+    });
+  }
+}, [error]);
 
   useEffect(() => {
     if (deviceId) {
@@ -36,19 +47,26 @@ const Configuration = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+ try {
     await dispatch(saveConfiguration({ deviceId, jsonData, key }));
     toast.current.show({ severity: "success", summary: "Success", detail: "Configuration Saved", life: 2000 });
-  };
+  } catch (err) {
+    toast.current.show({ severity: "error", summary: "Save Failed", detail: err?.message || "Something went wrong", life: 3000 });
+  }
+  }
 
   const handleDownload = async (e) => {
     e.preventDefault();
+try {
     await dispatch(downloadConfiguration(deviceId));
     toast.current.show({ severity: "success", summary: "Success", detail: "Download Successful", life: 2000 });
+  } catch (err) {
+    toast.current.show({ severity: "error", summary: "Download Failed", detail: err || "Something went wrong", life: 3000 });
+  }
   };
-
   return (
     <div className="telemetry-table">
-      <Toast ref={toast} />
+      <Toast ref={toast} position="bottom-right"/>
       <div className="status-container">
           <div>
           <button className={`status-button ${!status ? "offline" : ""}`}>
@@ -63,7 +81,7 @@ const Configuration = () => {
         </div>
       <div className="json-editor">
         <div className="json-header">
-          <h2>Device Configuration</h2>
+          <h2>Basic Configuration</h2>
         </div>
 
 

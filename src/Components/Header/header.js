@@ -1,9 +1,7 @@
-import React from 'react';
 import './header.css';
 import { useDevice } from '../../DeviceContext';
 import Consyst from '../../assets/consyst.webp';
 import { Link } from 'react-router-dom';
-import { menuItems } from '../../config';
 
 const Header = () => {
   const { selectedDeviceName, selectedComponent, selectedDeviceId, setSelectedComponent } = useDevice();
@@ -11,7 +9,7 @@ const Header = () => {
   const handleBreadcrumbClick = () => {
     setSelectedComponent("Telemetry Configuration");
   };
-  
+
   return (
     <header className="app-header">
       <Link to="/deviceList" className="logo-link">

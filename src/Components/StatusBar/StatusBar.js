@@ -32,7 +32,7 @@ const DownloadStatusBar = ({ deviceId }) => {
     return (
         <div className="download-status-container">
             <div className='progress-info'>
-                <span className="progress-state">{downloadState}</span>
+                <span className="progress-state">{downloadState === "Started" ? "Downloading" : downloadState}</span>
                 <span className="progress-percent">{(downloadPercent || 0).toFixed(1)}%</span>
             </div>
             <div className="progress-bar-container">

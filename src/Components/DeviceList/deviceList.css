@@ -57,11 +57,12 @@
 
 .red { 
   color: #ff0000;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
 }
 
 .green {
   color: #13ca13;
+  font-size: 1.5rem;
 }
 
 .p-sortable-column-icon {

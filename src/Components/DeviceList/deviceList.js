@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchDevices } from '../../Redux/Slices/deviceSlice';
 import { useWebSocket } from '../Web Socket/deviceListWebSocket';
 import { useDevice } from '../../DeviceContext';
+import Charts from '../Chart/UpdateChart';
+import GoogleDonutChart from '../Chart/UpdateChart';
 
 function DeviceList() {
   const [searchValues, setSearchValues] = useState({});
@@ -24,6 +26,11 @@ function DeviceList() {
   const { data: devices, loading, error } = useSelector((state) => state.API)
   const { status } = useWebSocket()
   const { setSelectedDeviceId, setSelectedDeviceName, setSelectedComponent } = useDevice();
+
+  useEffect(() => {
+  console.log("WebSocket status:", status);
+}, [status]);
+
 
   useEffect(() => {
     dispatch(fetchDevices())
@@ -88,17 +95,6 @@ function DeviceList() {
 
   return (
     <div className="card">
-      {/* <div className="header">
-        <p className='device-heading'>Device Management Home</p>
-        
-        <i className="pi pi-bars menu-icon" onClick={(e) => menuRef.current.toggle(e)}></i>
-        
-        <OverlayPanel ref={menuRef}>
-          <ul className="logout">
-            <li onClick={handleLogout}><  i className="pi pi-sign-out"></i> Logout</li>
-          </ul>
-        </OverlayPanel>
-      </div> */}
       <DataTable value={filteredDevices} tableStyle={{ minWidth: '50rem' }} className="custom-table"
         scrollable scrollHeight='370px' onRowClick={(e) => handleRowClick(e.data)}>
         <Column field="name" header={headerFilter} />

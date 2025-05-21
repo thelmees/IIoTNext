@@ -20,6 +20,7 @@ export const fetchAttributes = createAsyncThunk( "attributes/fetchAttributes",
         });
       return response.data || [];
     } catch (error) {
+      window.location.href = "/";
       return rejectWithValue("Failed to fetch attributes");
     }
   }
